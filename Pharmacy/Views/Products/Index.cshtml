@@ -28,7 +28,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Image)
-                @*<img scr="@Url.Action("getImage", "Products", new { id = item.Id })" />*@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Create_at)
@@ -58,11 +57,9 @@
                     @Html.DisplayFor(modelItem => item.Symptoms)
                 </td>
                 <td>
-                    @*@Html.DisplayFor(modelItem => item.Image)*@
-                    <img width="50px" src="@Url.Action("getImage", "Products", new { id = item.Id })" />
+                    <img width = "50px" src="@Url.Action("getImage", "Products", new { id = item.Id })"/>
                 </td>
                 <td>
-                    @*@Html.DisplayFor(modelItem => item.Create_at)*@
                     @item.Create_at.ToString("dd/MM/yyyy")
                 </td>
                 <td>
@@ -75,6 +72,5 @@
                 </td>
             </tr>
         }
-
     </table>
 }

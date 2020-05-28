@@ -1,0 +1,82 @@
+﻿@model Pharmacy.Models.Product
+
+@{
+    ViewBag.Title = "DETALLES";
+}
+
+<h2>DETALLES</h2>
+
+@using (Html.BeginForm("Details", "Products", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{    
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Quantity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Quantity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Symptoms)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Symptoms)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Image)
+        </dt>
+
+        <dd>
+            <img width="70px" src="@Url.Action("getImage", "Products", new { id = Model.Id })" />
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Create_at)
+        </dt>
+
+        <dd>
+            @Model.Create_at.ToString("dd/MM/yyyy")
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Is_active)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Is_active)
+        </dd>
+
+    </dl>
+    <p>
+        @Html.ActionLink("EDITAR", "Edit", new { id = Model.Id }) |
+        @Html.ActionLink("LISTAR", "Index")
+    </p>
+}
