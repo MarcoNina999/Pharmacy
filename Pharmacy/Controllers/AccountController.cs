@@ -68,14 +68,15 @@ namespace Pharmacy.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
+            ApplicationUser user = new ApplicationUser();
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
             // This doesn't count login failures towards account lockout
-            // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            // To enable password failures to trigger account lockout, change to shouldLockout: true            
+            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);                       
             switch (result)
             {
                 case SignInStatus.Success:
@@ -151,7 +152,7 @@ namespace Pharmacy.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { First_Name = model.First_Name, Last_Name = model.Last_Name,Ci = model.Ci, Phone = model.Phone, UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
