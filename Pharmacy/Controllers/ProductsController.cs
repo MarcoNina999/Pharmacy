@@ -7,9 +7,11 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
+using PagedList;
 using Pharmacy.Models;
 
 namespace Pharmacy.Controllers
@@ -19,9 +21,49 @@ namespace Pharmacy.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Products
-        public ActionResult Index()
+        public ViewResult Index( string sortOrder, string currentFilter, string searchString, int? page)
         {
-            return View(db.Products.ToList());
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "Name_desc" : "";
+            ViewBag.dateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = searchString;
+
+            var product = from s in db.Products select s;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                product = product.Where(s => s.Name.Contains(searchString) || s.Description.Contains(searchString));
+            }
+
+            switch (sortOrder)
+            {
+                case "Name_desc":
+                    product = product.OrderByDescending(s => s.Name);
+                    break;
+                case "Date":
+                    product = product.OrderBy(s => s.Create_at);
+                    break;
+                case "date_desc":
+                    product = product.OrderByDescending(s => s.Create_at);
+                    break;
+                default:
+                    product = product.OrderBy(s => s.Name);
+                    break;
+            }
+
+            int pageSize = 3;
+            int pageNumber = (page ?? 1);
+            return View(product.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: Products/Details/5
@@ -55,11 +97,11 @@ namespace Pharmacy.Controllers
         public ActionResult Create([Bind(Include = "Id,Name,Description,Quantity,Price,Symptoms,Image,Create_at,Is_active")] Product product)
         {
             HttpPostedFileBase FileBase = Request.Files[0];
-            //HttpFileCollectionBase CollectionBase = Request.Files;
+            
             WebImage image = new WebImage(FileBase.InputStream);
 
             product.Image = image.GetBytes();
-
+            
             product.Create_at = DateTime.Today;
 
             if (ModelState.IsValid)
@@ -94,11 +136,14 @@ namespace Pharmacy.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Name,Description,Quantity,Price,Symptoms,Image,Create_at,Is_active")] Product product)
         {
-            byte[] imagenActual = null;
+            //byte[] previousimage = null;
+            Product _product = new Product();
+
             HttpPostedFileBase FileBase = Request.Files[0];
-            if(FileBase == null)
+            if(FileBase.ContentLength == 0)
             {
-                imagenActual = db.Products.SingleOrDefault(x => x.Id == product.Id).Image;
+                _product = db.Products.Find(product.Id);
+                product.Image = _product.Image;
             }
             else
             {
@@ -107,6 +152,7 @@ namespace Pharmacy.Controllers
             }
             if (ModelState.IsValid)
             {
+                db.Entry(_product).State = EntityState.Detached;
                 db.Entry(product).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -160,5 +206,22 @@ namespace Pharmacy.Controllers
 
             return File(memoryStream, "image/jpg");
         }
+        //public async Task<List<object[]>> filtrarAjax(string Name)
+        //{
+        //    int coun = 0, cant;
+        //    string datafilter = "";
+        //    List<object[]> product = new List<object[]>();
+        //    var _product = await _context.Product.ToListAsync();
+        //    IEnumerable<Product> query;
+        //    if(Name == "null")
+        //    {
+        //        query = from u in _product select u;
+        //    }
+        //    else
+        //    {
+        //        query = from u in _product where u.Name.StartWith(Name) select u;
+        //    }
+        //    cant = query.Count();
+        //}
     }
 }

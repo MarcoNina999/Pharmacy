@@ -1,0 +1,52 @@
+﻿@model Pharmacy.Controllers.RolesByUser
+
+
+<!-- Please download this if you want custom controls, if not... do whatever you want-->
+<!-- http://kleinejan.github.io/titatoggle/ -->
+<link href="@Url.Content("~/Content/titatoggle-dist.css")" rel="stylesheet" />
+
+@{
+    ViewBag.Title = "Asignar Rol";
+}
+
+
+<div class="row">
+    <div class="col-md-6 col-md-offset-3 col-sm-12">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <h4>ROLES USUARIOS</h4>
+            <h3>@Model.UserName</h3>
+
+            <fieldset>
+                
+                <input type="hidden" value="@Model.UserName" name="usuarioName" id="usuarioName" />
+
+                @foreach (var role in Model.RolesUser)
+                {
+
+                    <div class="checkbox checkbox-slider--b-flat checkbox-slider-md">
+                        <label>
+                            <input type="checkbox" name="userRoles" value="@role.RoleName" checked="@role.HasRole"> <span class="toggle-label">@role.RoleName</span>
+                        </label>
+
+                    </div>
+                }
+
+            </fieldset>
+
+            <button class="btn btn-block btn-primary">GUARDAR</button>
+        }
+        <p><a href="@Url.Action("UsersRoles", "ManageUsers")" title="BACK">LISTA DE USUARIOS</a></p>
+    </div>
+
+</div>
+
+<style>
+    .toggle-label {
+        font-size: 20px;
+        font-weight: lighter;
+        color: white;
+    }
+</style>

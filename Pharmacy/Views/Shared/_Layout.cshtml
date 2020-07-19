@@ -1,60 +1,181 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    @*<meta name="viewport" content="width=device-width, initial-scale=1">*@
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+
+    <link href="~/css/styles.css" rel="stylesheet" />
+    <!-- Bootstrap CSS -->
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <!-- MetisMenu CSS -->
+    <link href="~/css/metisMenu.min.css" rel="stylesheet" />
+    <!-- Custom CSS -->
+    <link href="~/css/sb-admin-2.css" rel="stylesheet" />
+    <!-- Morris Charts CSS -->
+    <link href="~/css/morris.css" rel="stylesheet" />    
+    <!-- Custom Fonts -->
+    @*<link href="~/css/font-awesome/css/font-awesome.min.css" rel="stylesheet" />*@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js" crossorigin="anonymous"></script>
     <title>@ViewBag.Title</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
     <style>
         body {
-            background-image: url('../../Image/fondo acuarela-pastel.jpg');
+            background-image: url('../../Image/diferentes-verdes.jpg');
             background-position: center;
-            background-size: 310vh;
+            background-size: 210vh;
         }
     </style>
 </head>
 <body>
-    <div class="navbar navbar-fixed-top" style="background-color: mediumturquoise">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <img alt="searchPage" style="align-items" height="50px" src="~/Image/Pharmacy icon.png" />
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+        <a class="navbar-brand" href="~/"><img alt="searchPage" style="align-items" height="50px" src="~/Image/Pharmacy icon.png" /></a><button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#">
+            <i class="fas fa-bars"></i>
+        </button><!-- Navbar Search-->
+        <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
+            <div class="input-group">
+            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { placeholder = "Producto a Buscar", })
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="submit" value="Search"><i class="fas fa-search"></i></button>
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Principal", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Producto", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contacto", "Contact", "Home")</li>
-                </ul>
-                @Html.Partial("_LoginPartial")
+        </div>
+        </form>
+        <!-- Navbar-->
+        <ul class="navbar-nav ml-auto ml-md-0">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw fa-2x"></i></a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">                    
+                    @Html.Partial("_LoginPartial")
+                </div>
+            </li>
+        </ul>
+    </nav>
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                <div class="sb-sidenav-menu">
+                    <div class="nav">
+                        <div class="sb-sidenav-menu-heading">PRINCIPAL</div>
+                        <a class="nav-link" href="~/">
+                            <div class="sb-nav-link-icon"><i class="fas fa-home"></i></div>
+                            Principal
+                        </a>
+                        <div class="sb-sidenav-menu-heading">Addons</div>
+                        <a class="nav-link" href="~/Home/About">
+                            <div class="sb-nav-link-icon"><i class="fas fa-shipping-fast"></i></div>
+                            Productos
+                        </a>
+                        <a class="nav-link" href="~/Home/Contact">
+                            <div class="sb-nav-link-icon"><i class="fas fa-comment-dots"></i></div>
+                            Contactos
+                        </a>
+                        <div class="sb-sidenav-menu-heading">Usuarios</div>
+                        @if (Request.IsAuthenticated)
+                        {
+                            if (User.IsInRole("Gerente"))
+                            {
+                                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                    ADMIN ROLES
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="~/ManageUsers/UsersRoles">USUARIOS</a>
+                                        <a class="nav-link" href="~/ManageUsers/CreateRole">CREAR ROL</a>
+                                    </nav>
+                                </div>
+                            }
+                        }
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
+                            <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                            AUTENTIFICACION
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                @Html.Partial("_LoginPartial")
+                            </nav>
+                        </div>                      
+                    </div>
+                </div>
+                <div class="sb-sidenav-footer">
+                    <div class="small">Logged in as:</div>
+                    OruroPharmacy
+                </div>
+            </nav>
+        </div>
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container body-content">
+                    @RenderBody()
+                    <hr />
+                </div>
+            </main>
+            <footer class="py-4 mt-auto" style="background-color: mediumturquoise">
+                <div class="container-fluid">
+                    <div class="d-flex align-items-center justify-content-between small">
+                        <p style="text-align: center; font-size: 14px; color:black">Copyright &copy; OruroPharmacy - @DateTime.Now.Year</p>
+                        <div>
+                            <a href="#">Privacy Policy</a>
+                            &middot;
+                            <a href="#">Terms &amp; Conditions</a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="myLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="background-image: url('../../Image/diferentes-verdes.jpg');
+            background-position: center;
+            background-size: 210vh;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">@ViewBag.Title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="modal-content">
+                        Loading......
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Understood</button>
+                </div>
             </div>
         </div>
     </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <style type="text/css">
-            .border {
-                background-color: mediumturquoise;
-                text-align: center;
-                height: 30px;
-                color: black;
-                font-size: 20px;
-            }
-        </style>
-        <div class="container">
-                <div class="border"><p>Farmacia Oruro - Todos los derechos reservados</p></div>
-                <p style="text-align: center; font-size: 16px; color:black">OruroPharmacy - @DateTime.Now.Year</p>
-        </div>        
-    </div>
 
+
+    <!-- Jquery JavaScript -->
+    <script src="~/Scripts/jquery-3.5.1.min.js"></script>
+    <script src="~/Scripts/jquery-3.5.1.slim.min.js"></script>
+    <!-- Bootstrap JavaScript -->
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+    <!-- Style JavaScript -->
+    <script src="~/js/scripts.js"></script>
+    <script src="~/js/Style.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="~/Scripts/bootstrap.min.js"></script>    
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="~/js/metisMenu.min.js"></script>
+    <!-- Morris Charts JavaScript -->
+    <script src="~/js/morris.min.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="~/js/sb-admin-2.min.js"></script>
+    <script src="~/Scripts/popper.min.js"></script>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+    @*@section scripts {
+    }*@
 </body>
 </html>

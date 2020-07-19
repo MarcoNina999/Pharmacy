@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -14,15 +15,15 @@ namespace Pharmacy.Models
         [Display(Name = "Nombre")]
         public string Name { get; set; }
         [StringLength(50)]
-        [Display(Name = "Descripcion")]
+        [Display(Name = "Presentación")]
         public string Description { get; set; }
         [Display(Name = "Cantidad")]
         public int Quantity { get; set; }
         [Display(Name = "Precio")]
-        public int Price { get; set; }
-        [StringLength(200)]
+        //[Column(TypeName = "money")]        
+        public float Price { get; set; }        
         [Display(Name = "Sintomas")]
-        public string Symptoms { get; set; }        
+        public string Symptoms { get; set; }
         [Display(Name = "Imagen")]
         public byte[] Image { get; set; }
         [Required]
@@ -32,5 +33,7 @@ namespace Pharmacy.Models
         public System.DateTime Create_at { get; set; }
         [Display(Name = "¿Esta activo?")]
         public bool Is_active { get; set; }
+
+        public List<SaleDetails> SaleDetails { get; set; }
     }
 }

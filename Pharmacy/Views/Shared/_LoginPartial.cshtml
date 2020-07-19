@@ -1,22 +1,31 @@
 ﻿@using Microsoft.AspNet.Identity
+
 @if (Request.IsAuthenticated)
 {
-    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-nav ml-auto mt-2 mt-lg-0" }))
     {
-    @Html.AntiForgeryToken()
+        @Html.AntiForgeryToken()
 
     <ul class="nav navbar-nav navbar-right">
         <li>
-            @Html.ActionLink(User.Identity.GetUserName(), "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+            <a class="dropdown-item" href="~/Manage/Index">@User.Identity.GetUserName()</a>
+            @*@Html.ActionLink(User.Identity.GetUserName(), "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage", @class = "nav-link" })*@
         </li>
-        <li><a href="javascript:document.getElementById('logoutForm').submit()">Cerrar Sesion</a></li>
+        <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">Cerrar Sesion</a>
     </ul>
     }
 }
 else
 {
-    <ul class="nav navbar-nav navbar-right">
-        <li>@Html.ActionLink("Registrar", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-        <li>@Html.ActionLink("Iniciar Sesion", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
-    </ul>
+<ul class="nav navbar-nav navbar-right">
+
+    @*<a id="btnRegister" href="#myModal" class="dropdown-item" data-toggle="modal">Registrar</a>
+        <a id="btnLogin" href="#myModal" class="dropdown-item" data-toggle="modal">Iniciar Secion</a>*@
+    <a class="dropdown-item" href="~/Account/Register">Registrar</a>
+    <a class="dropdown-item" href="~/Account/Login">Iniciar Sesion</a>
+</ul>
+}
+@section scripts {
+    <script src="../../js/Style.js"></script>
+    <script src="~/Scripts/jquery-3.5.1.min.js"></script>
 }

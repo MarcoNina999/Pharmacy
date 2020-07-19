@@ -80,7 +80,7 @@ namespace Pharmacy.Models
 
         [Required]
         [Display(Name = "Celular")]
-        public int Phone { get; set; }
+        public string Phone { get; set; }
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]

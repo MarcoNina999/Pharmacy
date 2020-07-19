@@ -11,17 +11,18 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using PagedList;
 using Pharmacy.Models;
 
 
 namespace Pharmacy.Controllers
-{
-    //private ApplicationDbContext db = new ApplicationDbContext();
+{   
     [Authorize]
     public class AccountController : Controller
     {
         private ApplicationSignInManager _signInManager;
-        private ApplicationUserManager _userManager;
+        private ApplicationUserManager _userManager;        
+        ApplicationDbContext db = new ApplicationDbContext();
 
         public AccountController()
         {
@@ -64,7 +65,7 @@ namespace Pharmacy.Controllers
         {
             ViewBag.ReturnUrl = returnUrl;
             return View();
-        }
+        }      
 
         //
         // POST: /Account/Login
@@ -73,7 +74,6 @@ namespace Pharmacy.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
-            ApplicationDbContext db = new ApplicationDbContext();            
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -81,30 +81,18 @@ namespace Pharmacy.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true            
-            var person = db.Users.Select(x => new { First_Name = x.First_Name, Email = x.Email }).ToList().Select(x => new ApplicationUser(){ First_Name = x.First_Name, Email = x.Email }).ToList();
-            var result = await SignInManager.PasswordSignInAsync(person[0].Email, model.Password, model.RememberMe, shouldLockout: false);
-            using (ApplicationDbContext dbs = new ApplicationDbContext())
-            {
-                var idUsuario = User.Identity.GetUserId();
-                var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(dbs));
-                //CREAR ROL
-                var _result = roleManager.Create(new IdentityRole("Gerente"));
-                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(dbs));
-                //ASIGNAR USUARIOS AL ROL
-                var _result = userManager.AddToRole(idUsuario, "Gerente");
-                //EL USUARIO ESTA EN EL ROL
-                var _estaEnRol = userManager.IsInRole(idUsuario, "Gerente");
-            }
-                switch (result)
+            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            var person = db.Users.Select(x => new { First_Name = x.First_Name, Email = x.Email }).ToList().Select(x => new ApplicationUser() { First_Name = x.First_Name, Email = x.Email }).ToList();
+            switch (result)
                 {
                     case SignInStatus.Success:
-                        //return RedirectToLocal(returnUrl);
-                        if (person[0].Email == model.Email)
-                        {
-                            return RedirectToAction("Contact", "Home");
-                        }
-                        else
-                            return RedirectToAction("Index", "Home");
+                    return RedirectToLocal(returnUrl);
+                    if (person[0].Email == model.Email)
+                    {
+                        return RedirectToAction("Contact", "Home");
+                    }
+                    else
+                        return RedirectToAction("Index", "Home");
                     case SignInStatus.LockedOut:
                         return View("Lockout");
                     case SignInStatus.RequiresVerification:
@@ -176,7 +164,7 @@ namespace Pharmacy.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { First_Name = model.First_Name, Last_Name = model.Last_Name,Ci = model.Ci, Phone = model.Phone, UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { First_Name = model.First_Name, Last_Name = model.Last_Name,Ci = model.Ci, PhoneNumber = model.Phone, UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -510,6 +498,6 @@ namespace Pharmacy.Controllers
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
             }
         }
-        #endregion
+        #endregion        
     }
 }

@@ -1,52 +1,166 @@
 ﻿@{
     ViewBag.Title = "Principal";
+
 }
-<link href="../../css/Style.css" rel="stylesheet" />
-<div class="row">
-    <div class="col-md-4">
-        <li>
-            <h1>
-                FARMACIA
-                <em class="planet left">O</em>
-                <em>R</em>
-                <em>U</em>
-                <em>R</em>
-                <em class="planet right">O</em>
-            </h1>
-        </li>
-    </div>
-    <div class="col-md-4">
-        <div id="contentsvg">
+@{ var getProd = ViewBag.product as IEnumerable<Pharmacy.Models.Product>;}
+<style type="text/css">
+    .panel .panel-heading a {
+        color: whitesmoke;
+    }
+</style>
+<link href="~/css/Style.css" rel="stylesheet" />
+<link href="~/Css/Slider.css" rel="stylesheet" />
+
+@using (Html.BeginForm("Index", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @*<div class="row">*@
+    <div class="col-lg-10 col-sm-12">
+        <div id="contentsvg" class="col-sm-12">
             <ul>
-                <li><img class="Img" src="../../Image/pharmacy1.png" /></li>
+                <h1>
+                    FARMACIA
+                    <em class="planet left">O</em>
+                    <em>R</em>
+                    <em>U</em>
+                    <em>R</em>
+                    <em class="planet right">O</em>
+                </h1>
             </ul>
         </div>
     </div>
-</div>
-@*<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>*@
+    if (!User.IsInRole("Gerente"))
+    {
+        <h2 style="text-align-last:center; color: blue">PRODUCTOS EN OFERTA</h2>
+        <div class="container-all" style="align-content: center">
+            <div class="container-carrousel">
+                @foreach (var item in getProd)
+                {
+                <figure ><img onclick="Edit(@item.Id)" src="@Url.Action("getImage", "Home", new { Id = item.Id })" /></figure>
+                }
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-red">
+                    <div class="panel-heading">
+                        <a href="~/Cliente/BuscarClientes">
+                            <div class="row">
+                                <div class="col-12 text-center">
+                                    <i class="fa fa-users fa-5x"></i>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 text-center">
+                                    <div class="huge">Clientes</div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <a href="~/Cliente/BuscarClientes">
+                        <div class="panel-footer col-12 text-center">
+                            <span class="pull-left">Reporte de Clientes</span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-yellow">
+                    <div class="panel-heading">
+                        <a href="~/Producto/BuscarProductos">
+                            <div class="row">
+                                <div class="col-12 text-center">
+                                    <i class="fa fa-tv fa-5x"></i>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 text-center">
+                                    <div class="huge">Productos</div>
+                                </div>
+                            </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
-</div>
+                        </a>
+                    </div>
+                    <a href="~/Producto/BuscarProductos">
+                        <div class="panel-footer col-12 text-center">
+                            <span class="pull-left">Reporte de Productos</span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-green">
+                    <div class="panel-heading">
+                        <a href="~/Sale/NewSale">
+                            <div class="row">
+                                <div class="col-12 text-center">
+                                    <i class="fa fa-shopping-cart fa-5x"></i>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 text-center">
+                                    <div class="huge">Ventas</div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <a href="~/Venta/ReporteVentas">
+                        <div class="panel-footer col-12 text-center">
+                            <span class="pull-left">Reporte de Ventas</span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div style="border-radius: 40px;" class="panel panel-red">
+                    <div class="panel-heading">
+                        <a href="~/Vendedor/Index">
+                            <div class="row">
+                                <div class="col-xs-12 text-center">
+                                    <i class="fa fa-users fa-5x"></i>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 text-center">
+                                    <div class="huge">Vendedores</div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <a href="~/Vendedor/Index">
+                        <div class="panel-footer">
+                            <span class="pull-left">Reporte de Vendedores</span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+    <br /><br /><br /><br />
+
+    <script>
+        
+    function Edit(Id) {
+        window.location.href = "/Bookings/NewBooking/"+Id;
+    };
+    </script>
+    @*<div class="jumbotron">
+            <h1>ASP.NET</h1>
+            <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
+            <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+        </div>*@
+}
+@section scripts {
+    <!-- Style JavaScript -->
+    <script src="~/Content/bootstrap/js/bootstrap.min.js"></script>
+}

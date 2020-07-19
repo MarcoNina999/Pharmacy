@@ -1,80 +1,19 @@
-﻿@model IEnumerable<Pharmacy.Models.Product>
-@{
-    ViewBag.Title = "PRINCIPAL";
+﻿@{
+    ViewBag.Title = "About";
 }
-
-<h2 style="text-align: center">PRODUCTOS</h2>
-@using (Html.BeginForm("Index", "Products", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    <button>
-        @Html.ActionLink("Nuevo Producto", "Create")
-    </button>
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Quantity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Symptoms)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Image)
-                @*<img scr="@Url.Action("getImage", "Products", new { id = item.Id })" />*@
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Create_at)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Is_active)
-            </th>
-            <th></th>
-        </tr>
-
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Quantity)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Symptoms)
-                </td>
-                <td>
-                    @*@Html.DisplayFor(modelItem => item.Image)*@
-                    <img width="50px" src="@Url.Action("getImage", "Products", new { id = item.Id })" />
-                </td>
-                <td>
-                    @*@Html.DisplayFor(modelItem => item.Create_at)*@
-                    @item.Create_at.ToString("dd/MM/yyyy")
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Is_active)
-                </td>
-                <td>
-                    @Html.ActionLink("EDITAR", "Edit", new { id = item.Id }) |
-                    @Html.ActionLink("DETALLES", "Details", new { id = item.Id }) |
-                    @Html.ActionLink("ELIMINAR", "Delete", new { id = item.Id })
-                </td>
-            </tr>
-        }
-
-    </table>
-}
+<body>
+    <h2>Car</h2>
+    <div class="content-all">
+        <div class="content-carrousel">
+            <figure><img src="~/Image/diferentes-verdes.jpg" /></figure>
+            <figure><img src="~/Image/fondo-turquesa.jpg" /></figure>
+            <figure><img src="~/Image/Pharmacy icon.png" /></figure>
+            <figure><img src="~/Image/burbujas.jpg" /></figure>
+            <figure><img src="~/Image/fondo acuarela-pastel.jpg" /></figure>
+            <figure><img src="~/Image/pharmacy1.png" /></figure>
+            <figure><img src="~/Image/suavidad.jpg" /></figure>
+            <figure><img src="~/Image/vac.jpg" /></figure>
+            <figure><img src="~/Image/vacuna.png" /></figure>
+        </div>
+    </div>
+</body>

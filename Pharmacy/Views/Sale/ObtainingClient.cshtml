@@ -1,0 +1,119 @@
+﻿<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+@model IEnumerable<Pharmacy.Models.ApplicationUser>
+@*@model Pharmacy.Models.ApplicationUser*@
+@{
+    ViewBag.Title = "BuscarPorCodigo";
+    Layout = null;
+}
+<script src="~/Scripts/jquery-3.5.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $("#tbClient tbody tr").dblclick(function () {
+            var Client = {};
+            var n, a, m;
+            n = Client.Cod = $(this).children().eq('0').text();
+            a = Client.Name = $(this).children().eq('1').text() + " " + $(this).children().eq('2').text();
+            m = Client.DNI = $(this).children().eq('3').text();
+            console.info(a, n, m);
+            window.opener.obtainingClient(Client);
+            window.close();
+        });
+    });
+</script>
+
+<div class="panel panel-default">
+    <div class="panel-heading">Buscar Clientes en el Sistema</div>
+    <div class="panel-body">
+        @using (Html.BeginForm())
+        {
+            <div class="form-horizontal">
+                <h2 style="text-align:center; font-family:Arial; font-weight:700;">Buscar Cliente por:</h2>
+                <fieldset>
+                    <div class="row" style="padding-bottom:8px;">
+                        <div class="form-group col-md-3">
+                            @Html.Label("Nombre", new { @class = "control-label col-md-4" })
+                            <div class="col-md-8">
+                                @Html.TextBox("txtFirstName", null, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group col-md-3">
+                            @Html.Label("Codigo", new { @class = "control-label col-md-4" })
+                            <div class="col-md-8">
+                                @Html.TextBox("txtClient", null, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group col-md-3">
+                            @Html.Label("DNI", new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextBox("txtCi", null, new { @class = "form-control", @type = "number" })
+                            </div>
+                        </div>
+                        <div class="form-group col-md-3">
+                            @Html.Label("Ap.Paterno", new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextBox("txtLastName", null, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+
+            <input type="submit" value="Buscar" />
+        }
+    </div>
+</div>
+
+<table class="table table-striped" id="tbClient">
+
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First_Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Last_Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ci)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.First_Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Last_Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ci)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/jquery-3.5.1.min.js"></script>

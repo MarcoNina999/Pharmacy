@@ -1,0 +1,72 @@
+﻿@model Pharmacy.Controllers.UserRolesViewData
+@using System.Web.Security
+
+
+@{
+    ViewBag.Title = "Roles by User";
+}
+
+@functions{
+    string seteaColorLabel(string rol)
+    {
+        switch (rol.ToLower().Trim())
+        {
+            case "Gerente":
+                return "label-success";
+            case "administrator":
+                return "label-success";
+            case "notificado":
+                return "label-warning";
+            default:
+                return "label-default";
+        }
+    }
+}
+
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <h3>Roles by User</h3>        
+        <a class="btn btn-primary btn-lg" href="@Url.Action("CreateRole", "ManageUsers")" title="List & Create Roles">Nuevo y Listar &raquo;</a>
+        <hr />
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-8 col-md-offset-2 col-sm-12">
+        <div class="list-group">
+            @foreach (var item in Model.RolesByUser)
+            {
+                <a href="@Url.Action("AssignUserRoles", "ManageUsers", new { userName = @item.UserName })" class="list-group-item">
+                    <h4 class="list-group-item-heading">
+                        @item.UserName
+                    </h4>
+                    <p class="list-group-item-text bloque-labels-roles">
+                        @foreach (var role in item.RolesUser.OrderBy(r => r.RoleName))
+                        {
+                            if (role.HasRole)
+                            {
+                                <span class="label @seteaColorLabel(role.RoleName)">@role.RoleName</span>
+                            }
+                        }
+                    </p>
+                    <p class="list-group-item-text"><small>Gestionar Roles</small></p>
+                </a>
+            }
+        </div>
+    </div>
+</div>
+
+<style>
+    .bloque-labels-roles {
+        margin-bottom: 5px;
+        font-size: 15px;
+    }
+</style>
+
+<script>
+    $(function () {
+        var notify = function () {
+            var modelJSON = @Html.Raw(Json.Encode(Model));
+            console.log("Json Model from UsersRoles ===>" + modelJSON);
+        };
+    });
+</script>
