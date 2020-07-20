@@ -9,7 +9,7 @@ namespace Pharmacy.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationsEnabled = false;
         }
 
         protected override void Seed(Pharmacy.Models.ApplicationDbContext context)

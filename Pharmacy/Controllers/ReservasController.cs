@@ -125,18 +125,19 @@ namespace Pharmacy.Controllers
 
             int T = _db.ObtenerCantReservados();
             int A = _db.ObtenerCantActualProd();
-            int B = c.CantAReservar + T;
-            int C = A - B;
-            if (C < 0)
-            {
-                //no se borran las variables sesion
-                return RedirectToAction("Index");
-            }
-            else
-            {
-                //se borran las variables sesion
-                return View("compra exitosa");
-            }
+            //int B = c.CantAReservar + T;
+            //int C = A - B;
+            //if (C < 0)
+            //{
+            //    //no se borran las variables sesion
+            //    return RedirectToAction("Index");
+            //}
+            //else
+            //{
+            //    //se borran las variables sesion
+            //    return View("compra exitosa");
+            //}
+            return View();
 
         }
     }

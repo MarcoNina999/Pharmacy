@@ -5,8 +5,8 @@ using System.Web;
 
 namespace Pharmacy.Models
 {
-    //public class variables
-    //{
+    public class variables
+    {
 
-    //}
+    }
 }

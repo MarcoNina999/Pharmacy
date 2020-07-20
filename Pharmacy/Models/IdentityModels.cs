@@ -39,5 +39,8 @@ namespace Pharmacy.Models
 
         public DbSet<Product> Products { get; set; }
         public DbSet<Reserva> Reservas { get; set; }
+
+        //public System.Data.Entity.DbSet<Pharmacy.Models.ApplicationUser> ApplicationUsers { get; set; }
+        //public DbSet<> Usuarios { get; set; }
     }
 }

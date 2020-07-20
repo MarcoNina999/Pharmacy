@@ -11,24 +11,17 @@
 </p>
 <table class="table">
     <tr>
-        <th>okey
-        ok
+        <th>
             @Html.DisplayNameFor(model => model.Product.Name)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Titulo)
+            @Html.DisplayNameFor(model => model.Pricio)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Titul2o)
+            @Html.DisplayNameFor(model => model.CatReservas)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Contenido)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Autor)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Publicacion)
+            @Html.DisplayNameFor(model => model.Fecha)
         </th>
         <th></th>
     </tr>
@@ -39,19 +32,13 @@
             @Html.DisplayFor(modelItem => item.Product.Name)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Titulo)
+            @Html.DisplayFor(modelItem => item.Pricio)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Titul2o)
+            @Html.DisplayFor(modelItem => item.CatReservas)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Contenido)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Autor)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Publicacion)
+            @Html.DisplayFor(modelItem => item.Fecha)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |

@@ -11,17 +11,15 @@ namespace Pharmacy.Models
     {
         public int Id { get; set; }
 
-        [StringLength(50)]
-        //public string Id_Cliente { get; set; }
-        //[StringLength(50)]
-        public string Description { get; set; }
-        public int Detail { get; set; }
-        [StringLength(200)]
-        public int Price { get; set; }
-        [StringLength(200)]
-        public DateTime Date { get; set; }
-        public byte[] Image { get; set; }
-       
+        
+
+        public float Pricio { get; set; }  
+        public int CatReservas { get; set; }
+        public DateTime Fecha { get; set; }
+        //public int UserId { get; set; }
+        //ForeignKey("UserId")]
+        //public  UserId { get; set; }
+
         public int ProdId { get; set; } //obtener la id de la otra tabla
 
         [ForeignKey("ProdId")]
